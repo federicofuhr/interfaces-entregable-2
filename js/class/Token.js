@@ -1,9 +1,10 @@
 import Drawable from "./Drawable.js";
 
 export default class Token extends Drawable {
-    constructor(posX, posY, radius, context) {
+    constructor(posX, posY, radius, context, playerId) {
         super(posX, posY, context);
         this.radius = radius;
+        this.playerId = playerId;
         let img = new Image();
         img.src = './images/fede.jpg';
         this.img = img;
@@ -33,6 +34,9 @@ export default class Token extends Drawable {
     }
     getRadius() {
         return this.radius;
+    }
+    getPlayerId() {
+        return this.playerId;
     }
     isPointInside(x, y) {
         const _x = this.posX - x;
