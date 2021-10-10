@@ -306,7 +306,7 @@ function notifyWinner() {
     div2.appendChild(h1);
     div2.appendChild(a);
     notify.appendChild(div2);
-    let body = document.querySelector("body");
+    let body = document.querySelector(".container-edit");
     body.insertBefore(notify, canvas);
 }
 
