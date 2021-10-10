@@ -187,8 +187,8 @@ function addToken() {
     let token2 = new Token(playerTwoX, playerTwoY,playerTwoX, playerTwoY, 45, ctx, 2, "juan.jpg");
     playerOneTokens.push(token1);
     playerTwoTokens.push(token2);
-    playerOneY += 40;
-    playerTwoY += 40;
+    playerOneY += 30;
+    playerTwoY += 30;
 }
 
 function addFigures() {
@@ -197,6 +197,56 @@ function addFigures() {
         setTimeout(addFigures, 0);
     }
 }
+
+
+
+
+
+
+
+
+
+
+function Timer(fn, t) {
+    var timerObj = setInterval(fn, t);
+
+    this.stop = function () {
+        if (timerObj) {
+            clearInterval(timerObj);
+            timerObj = null;
+        }
+        return this;
+    }
+
+    // start timer using current settings (if it's not already running)
+    this.start = function () {
+        if (!timerObj) {
+            this.stop();
+            timerObj = setInterval(fn, t);
+        }
+        return this;
+    }
+
+    // start with new or original interval, stop current interval
+    this.reset = function (newT = t) {
+        t = newT;
+        return this.stop().start();
+    }
+}
+
+var timeleft = 10;
+var timer = new Timer(function () {
+    if (timeleft <= 0) {
+        timer.reset(1000);
+        timeleft = 10;
+        (playerTurn == 1) ? playerTurn = 2 : playerTurn = 1;
+        document.getElementById("timer").innerHTML = "Turno finalizado";
+    } else {
+        document.getElementById("timer").innerHTML = timeleft + " segundos restantes";
+    }
+    timeleft -= 1;
+}, 1000);
+
 
 setTimeout(() => {
     addFigures();
@@ -285,6 +335,8 @@ function findDropArea(e) {
             for (let i = 0; i < dropSlots.length; i++) {
                 if ((dropSlots[i].x1 <= x) && (x <= dropSlots[i].x2)) {
                     if ((dropSlots[i].y1 <= y) && (y <= dropSlots[i].y2)) {
+                        timer.reset(1000);
+                        timeleft = 10;
                         clickFig.setLocked(true);
                         let cellCordenates = dropToken(i, token);
                         let win = checkFourInLine(cellCordenates);
