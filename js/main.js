@@ -295,5 +295,8 @@ function onMouseMove(e) {
 
 
 canvas.addEventListener('mousedown', onMouseDown, false);
-canvas.addEventListener('mouseup', (e) => { findDropArea(e) }, false);
+canvas.addEventListener('mouseup', (e) => { 
+    findDropArea(e);
+    drawFigure();
+}, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
