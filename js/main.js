@@ -142,7 +142,7 @@ const colunmsQuantity = 7;
 const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
 
 let lastClickedToken = null;
-let turn = 1;
+let playerTurn = 1;
 let playerOneX = 300;
 let playerOneY = 300;
 let playerTwoX = 1500;
@@ -231,10 +231,10 @@ setTimeout(() => {
 
 function findClickedFigure(x, y) {
     let array;
-    (turn == 1) ? array = playerOneTokens: array = playerTwoTokens;
+    (playerTurn == 1) ? array = playerOneTokens: array = playerTwoTokens;
     for (let i = 0; i < array.length; i++) {
         const element = array[i];
-        if (element.isPointInside(x, y)) {
+        if (element.isPointInside(x, y) && (playerTurn == element.getPlayerId())) {
             return element;
         }
     }
@@ -249,6 +249,7 @@ function onMouseDown(e) {
     let clickFig = findClickedFigure(e.offsetX, e.offsetY);
     if (clickFig != null) {
         clickFig.setResaltado(true);
+        clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
         lastClickedToken = clickFig;
     }
     drawFigure();
@@ -256,6 +257,27 @@ function onMouseDown(e) {
 
 function onMouseUp(e) {
     isMouseDown = false;
+    const minDx = boardX;
+    const maxDx = board.getCols() * board.getCellSize() + boardX;
+    const minDy = dy;
+    const maxDy = board.getCellSize() + dy;
+    const x = e.offsetX;
+    const y = e.offsetY;
+    if (!((x >= minDx) && (x <= maxDx) && (y >= minDy) && (y <= maxDy))) {
+        let clickFig = findClickedFigure(e.offsetX, e.offsetY);
+        if (clickFig != null) {
+            const x = clickFig.getLastPosX();
+            const y = clickFig.getLastPosY();
+            clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
+            clickFig.setPosition(x, y);
+        }
+    }
+    drawFigure();
+    if (playerTurn == 1) {
+        playerTurn = 2;
+    } else {
+        playerTurn = 1;
+    }
 }
 
 function onMouseMove(e) {
