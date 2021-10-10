@@ -190,8 +190,8 @@ function clearCanvas() {
 }
 
 function addToken() {
-    let token1 = new Token(playerOneX, playerOneY,playerOneX, playerOneY, 45, ctx, 1, "fede.jpg");
-    let token2 = new Token(playerTwoX, playerTwoY,playerTwoX, playerTwoY, 45, ctx, 2, "juan.jpg");
+    let token1 = new Token(playerOneX, playerOneY,playerOneX, playerOneY, 45, ctx, 1, "ficha-amarilla.png");
+    let token2 = new Token(playerTwoX, playerTwoY,playerTwoX, playerTwoY, 45, ctx, 2, "ficha-corazon.png");
     playerOneTokens.push(token1);
     playerTwoTokens.push(token2);
     playerOneY += 30;
@@ -268,6 +268,7 @@ function findClickedFigure(x, y) {
             return element;
         }
     }
+    return null;
 }
 
 // Localiza donde fue soltada la ficha y si esta dentro del area permitida
@@ -385,3 +386,33 @@ canvas.addEventListener('mouseup', (e) => {
     drawFigure();
 }, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
+
+let select1 = document.querySelector("#token-1");
+let select2 = document.querySelector("#token-2");
+let options = new Array();
+options["1"] = "ficha-amarilla.png";
+options["2"] = "ficha-corazon.png";
+options["3"] = "ficha-roja.png";
+options["4"] = "ficha-verde.png";
+
+select1.addEventListener("change", () => {
+    let value1 = select1.value;
+    let value2 = select2.value;
+    if (value1 != value2) {
+        let src = options[value1];
+        for (let i = 0; i < playerOneTokens.length; i++) {
+            let token = playerOneTokens[i];
+            updateToken(token, src);
+            onMouseDown()
+        }
+        
+    }
+})
+
+function updateToken(token, src) {
+            setTimeout(() => {
+                token.setImage(src);
+                token.draw();
+            }, 0);
+    
+}

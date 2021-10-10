@@ -17,9 +17,34 @@
 <body>
     <div class="container-edit">
         <h1 class="text-personalize">Connect4</h1>
+        <div class="d-flex justify-content-around text-light">
+            <div class="input-group">
+                <div class="input-group-prepend ">
+                    <label class="input-group-text" for="token-1">Estilo de ficha Jugador 1 </label>
+                </div>
+                <select class="custom-select" name="style-1" id="token-1">
+                    <option value="1" selected>Ficha Amarilla</option>
+                    <option value="2">Ficha Corazon</option>
+                    <option value="3">Ficha Roja</option>
+                    <option value="4">Ficha Verde</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="token-2">Estilo de ficha Jugador 1 </label>
+                </div>
+                <select class="custom-select" name="style-2" id="token-2">
+                    <option value="1">Ficha Amarilla</option>
+                    <option value="2" selected>Ficha Corazon</option>
+                    <option value="3">Ficha Roja</option>
+                    <option value="4">Ficha Verde</option>
+                </select>
+            </div>
+        </div>
         <div>
             <p id="timer" class="fw-bold fs-2 text-personalize"></p>
         </div>
+        
         <canvas id="myCanvas" width="1500" height="900"></canvas>
     </div>
     <script type="module" src="js/main.js"></script>
