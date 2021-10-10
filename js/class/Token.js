@@ -1,15 +1,14 @@
 import Drawable from "./Drawable.js";
 
 export default class Token extends Drawable {
-    constructor(posX, posY, radius, fill, context) {
-        super(posX, posY, fill, context);
+    constructor(posX, posY, radius, context) {
+        super(posX, posY, context);
         this.radius = radius;
         let img = new Image();
         img.src = './images/fede.jpg';
         this.img = img;
     }
     draw() {
-        super.draw();
         this.ctx.save();
         this.ctx.beginPath();
         this.ctx.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI, true);
@@ -20,9 +19,7 @@ export default class Token extends Drawable {
         }
         this.ctx.closePath();
         this.ctx.clip();
-
         this.ctx.drawImage(this.img, this.posX - this.radius, this.posY - this.radius);
-
         this.ctx.beginPath();
         this.ctx.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI, true);
         if (this.resaltado) {
@@ -40,7 +37,7 @@ export default class Token extends Drawable {
     isPointInside(x, y) {
         const _x = this.posX - x;
         const _y = this.posY - y;
-        return (Math.sqrt(_x * _x + _y * _x) < this.radius);
+        return (Math.sqrt(_x * _x + _y * _y) < this.radius);
     }
     setImage(path) {
         let img = new Image();

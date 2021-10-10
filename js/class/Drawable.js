@@ -1,15 +1,12 @@
 export default class Drawable {
-    constructor(posX, posY, fill, context) {
+    constructor(posX, posY, context) {
         this.posX = posX;
         this.posY = posY;
-        this.fill = fill;
         this.resaltado = false;
         this.resaltadoEstilo = "red";
         this.ctx = context;
     }
-    setFill(fill) {
-        this.fill = fill;
-    }
+    
     setPosition(x, y) {
         this.posX = x;
         this.posY = y;
@@ -27,12 +24,7 @@ export default class Drawable {
     getPosY() {
         return this.getPosY;
     }
-    getFill() {
-        return this.fill;
-    }
-    draw() {
-        this.ctx.fillStyle = this.fill;
-    }
+    
     setResaltado(resaltado) {
         this.resaltado = resaltado;
     }

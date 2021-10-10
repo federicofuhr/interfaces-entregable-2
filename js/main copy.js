@@ -1,6 +1,7 @@
 import Board from "./class/Board.js";
 import Token from "./class/Token.js";
 
+
 let canvas = document.querySelector("#myCanvas");
 let ctx = canvas.getContext("2d");
 
@@ -22,7 +23,10 @@ function dropToken(j) {
         if ((i + 1 >= matrix.length) || (matrix[i + 1][j].isOccuped())) {
             matrix[i][j].occuped = true;
             fillCell(matrix[i][j]);
-            return { i: i, j: j };
+            return {
+                i: i,
+                j: j
+            };
         }
     }
 }
@@ -145,16 +149,60 @@ function checkBotRight(i, j) {
     }
 }); */
 
+// Invocaciones
+function clearCanvas() {
+    ctx.fillStyle = '#F8F8FF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+
+function drawTokensPlayerOne() {
+    clearCanvas();
+    for (let i = 0; i < playerOneTokens.length; i++) {
+        playerOneTokens[i].draw();
+    }
+}
+
+function drawTokensPlayerTwo() {
+    clearCanvas();
+    for (let i = 0; i < playerTwoTokens.length; i++) {
+        playerTwoTokens[i].draw();
+    }
+}
+
+function addTokenPlayerOne() {
+        let token = new Token(playerOneX, playerOneY, 40, ctx);
+        playerOneTokens.push(token);
+        playerOneY += 5;
+}
+
+function addTokenPlayerTwo() {
+    let token = new Token(playerTwoX, playerTwoY, 40, ctx);
+        playerTwoTokens.push(token);
+        playerTwoY += 5;
+}
+
+function addTokens() {
+    for (let i = 0; i < maxTokensQuantity; i++) {
+        addTokenPlayerOne();
+        drawTokensPlayerOne();
+        addTokenPlayerTwo();
+        drawTokensPlayerTwo();
+    }
+}
+
+
+
+
 
 const rowsQuantity = 6;
-const colunmsQuantity = 7;
-const maxTokensQuantity = (rowsQuantity * colunmsQuantity) / 2;
-
+const colsQuantity = 7;
+const maxTokensQuantity = (rowsQuantity * colsQuantity) / 2;
 let lastClickedToken = null;
-let issMouseDown = false;
+let isMouseDown = false;
 
 let playerOneX = 300;
-let playerOneY = 600;
+let playerOneY = 800;
 let playerTwoX = 1500;
 let playerTwoY = 800;
 
@@ -162,103 +210,6 @@ let playerOneTokens = [];
 let playerTwoTokens = [];
 
 
-
-let canvasWidth = canvas.width;
-let canvasHeight = canvas.height;
-
-
-let board = new Board(500, 200, 6, 7, 100, ctx);
+addTokens();
+let board = new Board(500, 200, rowsQuantity, colsQuantity, 100, ctx);
 board.drawBoard();
-
-
-
-
-const CANT_FIG = 30;
-
-let figures = [];
-let lastClickedFigure = null;
-let isMouseDown = false;
-
-let posX = playerOneX;
-let posY = playerOneY;
-
-function addFigure() {
-    addToken();
-    drawFigure();
-}
-
-function drawFigure() {
-    clearCanvas();
-    for (let i = 0; i < figures.length; i++) {
-        figures[i].draw();
-        board.drawBoard();
-    }
-}
-
-function clearCanvas() {
-    ctx.fillStyle = '#F8F8FF';
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-}
-
-function addToken() {
-    let token = new Token(posX, posY, 40, ctx);
-    figures.push(token);
-    posY += 5;
-}
-
-function addFigures() {
-    addFigure();
-    if (figures.length < CANT_FIG) {
-        setTimeout(addFigures, 0);
-    }
-}
-
-setTimeout(() => {
-    addFigures();
-}, 333);
-
-function findClickedFigure(x, y) {
-    for (let i = 0; i < figures.length; i++) {
-        const element = figures[i];
-        if (element.isPointInside(x, y)) {
-            return element;
-        }
-    }
-}
-
-function onMouseDown(e) {
-    isMouseDown = true;
-    if (lastClickedFigure != null) {
-        lastClickedFigure.setResaltado(false);
-        lastClickedFigure = null;
-    }
-    let clickFig = findClickedFigure(e.offsetX, e.offsetY);
-    if (clickFig != null) {
-        clickFig.setResaltado(true);
-        lastClickedFigure = clickFig;
-    }
-    drawFigure();
-}
-
-function onMouseUp(e) {
-    isMouseDown = false;
-}
-
-function onMouseMove(e) {
-    if (isMouseDown && (lastClickedFigure != null)) {
-        lastClickedFigure.setPosition(e.offsetX, e.offsetY);
-        drawFigure();
-    }
-}
-
-function randomRGBA() {
-    let r = Math.round(Math.random() * 255);
-    let g = Math.round(Math.random() * 255);
-    let b = Math.round(Math.random() * 255);
-    let a = 255;
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-}
-
-canvas.addEventListener('mousedown', onMouseDown, false);
-canvas.addEventListener('mouseup', onMouseUp, false);
-canvas.addEventListener('mousemove', onMouseMove, false);
