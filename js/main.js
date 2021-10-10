@@ -256,13 +256,9 @@ function findDropArea(e) {
     const maxDy = board.getCellSize() + dy;
     const x = e.offsetX;
     const y = e.offsetY;
-    if (!((x >= minDx) && (x <= maxDx) && (y >= minDy) && (y <= maxDy))) {
+    if (((x >= minDx) && (x <= maxDx) && (y >= minDy) && (y <= maxDy))) {
         let clickFig = findClickedFigure(e.offsetX, e.offsetY);
         if (clickFig != null) {
-            const x = clickFig.getLastPosX();
-            const y = clickFig.getLastPosY();
-            clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
-            clickFig.setPosition(x, y);
             clickFig.setLocked(true);
             for (let i = 0; i < dropSlots.length; i++) {
                 if ((dropSlots[i].x1 <= x) && (x <= dropSlots[i].x2)) {
@@ -273,6 +269,15 @@ function findDropArea(e) {
                     }
                 }
             }
+        }
+    } else {
+        let clickFig = findClickedFigure(e.offsetX, e.offsetY);
+        if (clickFig != null) {
+            const x = clickFig.getLastPosX();
+            const y = clickFig.getLastPosY();
+            clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
+            clickFig.setPosition(x, y);
+            clickFig.setLocked(true);
         }
     }
 }
