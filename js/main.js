@@ -16,31 +16,31 @@ function checkFourInLine(cell) {
     let i = cell.i;
     let j = cell.j
     if (checkTopLeft(i, j) == 4) {
-        console.log('GANASTE 1');
+        alert('GANASTE 1');
         return true;
     }
     if (checkTopRight(i, j) == 4) {
-        console.log('GANASTE 3');
+        alert('GANASTE 3');
         return true;
     }
     if (checkLeft(i, j) == 4) {
-        console.log('GANASTE 4');
+        alert('GANASTE 4');
         return true;
     }
     if (checkRight(i, j) == 4) {
-        console.log('GANASTE 5');
+        alert('GANASTE 5');
         return true;
     }
     if (checkBotLeft(i, j) == 4) {
-        console.log('GANASTE 6');
+        alert('GANASTE 6');
         return true;
     }
     if (checkBot(i, j) == 4) {
-        console.log('GANASTE 7');
+        alert('GANASTE 7');
         return true;
     }
     if (checkBotRight(i, j) == 4) {
-        console.log('GANASTE 8');
+        alert('GANASTE 8');
         return true;
     }
     return false;
@@ -182,8 +182,8 @@ function clearCanvas() {
 }
 
 function addToken() {
-    let token1 = new Token(playerOneX, playerOneY, 45, ctx, 1);
-    let token2 = new Token(playerTwoX, playerTwoY, 45, ctx, 2);
+    let token1 = new Token(playerOneX, playerOneY, 45, ctx, 1, "fede.jpg");
+    let token2 = new Token(playerTwoX, playerTwoY, 45, ctx, 2, "juan.jpg");
     playerOneTokens.push(token1);
     playerTwoTokens.push(token2);
     playerOneY += 5;
@@ -222,7 +222,7 @@ function onMouseDown(e) {
         lastClickedToken = null;
     }
     let clickFig = findClickedFigure(e.offsetX, e.offsetY);
-    if (clickFig != null) {
+    if ((clickFig != null) && (!clickFig.isLocked())) {
         clickFig.setResaltado(true);
         clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
         lastClickedToken = clickFig;
@@ -263,6 +263,7 @@ function findDropArea(e) {
             const y = clickFig.getLastPosY();
             clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
             clickFig.setPosition(x, y);
+            clickFig.setLocked(true);
             for (let i = 0; i < dropSlots.length; i++) {
                 if ((dropSlots[i].x1 <= x) && (x <= dropSlots[i].x2)) {
                     if ((dropSlots[i].y1 <= y) && (y <= dropSlots[i].y2)) {

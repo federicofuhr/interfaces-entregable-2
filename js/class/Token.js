@@ -1,13 +1,20 @@
 import Drawable from "./Drawable.js";
 
 export default class Token extends Drawable {
-    constructor(posX, posY, radius, context, playerId) {
+    constructor(posX, posY, radius, context, playerId, imgPath) {
         super(posX, posY, context);
         this.radius = radius;
         this.playerId = playerId;
         let img = new Image();
-        img.src = './images/fede.jpg';
+        img.src = './images/' + imgPath;
         this.img = img;
+        this.locked = false;
+    }
+    isLocked() {
+        return this.locked;
+    }
+    setLocked(status) {
+        this.locked = status;
     }
     draw() {
         this.ctx.save();
