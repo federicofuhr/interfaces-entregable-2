@@ -8,6 +8,7 @@ export default class Token extends Drawable {
         let img = new Image();
         img.src = './images/' + imgPath;
         this.img = img;
+        this.img.onload = this.draw();
         this.locked = false;
     }
     isLocked() {
