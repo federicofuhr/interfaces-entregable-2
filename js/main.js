@@ -115,6 +115,7 @@ const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
 
 let lastClickedToken = null;
 let playerTurn = 1;
+let finalizedGame = false;
 let playerOneX = 300;
 let playerOneY = 100;
 let playerTwoX = 1500;
@@ -224,10 +225,32 @@ function onMouseDown(e) {
     let clickFig = findClickedFigure(e.offsetX, e.offsetY);
     if ((clickFig != null) && (!clickFig.isLocked())) {
         clickFig.setResaltado(true);
-        //clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
         lastClickedToken = clickFig;
     }
     drawFigure();
+}
+
+function notifyWinner() {
+    console.log("gano el jugador: ", playerTurn);
+    canvas.classList.toggle("collapse");
+    let notify = document.createElement("div");
+    notify.classList.add("winner-screen");
+    let img = document.createElement("img");
+    img.src = "./images/winner-screen.jpg";
+    img.alt = "imagen de victoria";
+    let h1 = document.createElement("h1");
+    h1.innerHTML = "FELICIDADES JUGADOR " + playerTurn;
+    let a = document.createElement("a");
+    a.href = "./index.html";
+    a.innerHTML = "Reiniciar Juego";
+    let div2 = document.createElement("div");
+    div2.classList.toggle("message");
+    notify.appendChild(img);
+    div2.appendChild(h1);
+    div2.appendChild(a);
+    notify.appendChild(div2);
+    let body = document.querySelector("body");
+    body.insertBefore(notify, canvas);
 }
 
 function dropToken(j, token) {
@@ -264,8 +287,12 @@ function findDropArea(e) {
                     if ((dropSlots[i].y1 <= y) && (y <= dropSlots[i].y2)) {
                         clickFig.setLocked(true);
                         let cellCordenates = dropToken(i, token);
-                        checkFourInLine(cellCordenates);
-                        (playerTurn == 1)? playerTurn = 2: playerTurn = 1;
+                        let win = checkFourInLine(cellCordenates);
+                        if (!win) {
+                            (playerTurn == 1)? playerTurn = 2: playerTurn = 1;
+                        }
+                        else
+                            notifyWinner();
                     }
                 }
             }
