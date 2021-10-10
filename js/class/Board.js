@@ -27,6 +27,9 @@ export default class Board {
         return matrix;
     }
     // Getters
+    getCell(i, j) {
+        return this.board[i][j];
+    }
     getPosX() {
         return this.posX;
     }

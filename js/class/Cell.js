@@ -34,10 +34,17 @@ export default class Cell {
     isOccuped() {
         return this.occuped;
     }
+    getToken() {
+        return this.token;
+    }
+    // Setters
+    setOccuped() {
+        this.occuped = true;
+    }
     setToken(token) {
         this.token = token;
     }
-
+    // funcion para representar la celda en el canvas
     drawCell() {
         this.context.drawImage(this.img, this.x1, this.y1, this.width, this.height);
     }
