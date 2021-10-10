@@ -5,18 +5,7 @@ import Cell from "./class/Cell.js";
 let canvas = document.querySelector("#myCanvas");
 let ctx = canvas.getContext("2d");
 
-function dropToken(j) {
-    for (let i = 0; i < matrix.length; i++) {
-        if ((i + 1 >= matrix.length) || (matrix[i + 1][j].isOccuped())) {
-            matrix[i][j].occuped = true;
-            fillCell(matrix[i][j]);
-            return {
-                i: i,
-                j: j
-            };
-        }
-    }
-}
+
 
 function fillCell(cell) {
     ctx.fillStyle = "tomato";
@@ -59,7 +48,7 @@ function checkFourInLine(cell) {
 
 function checkTopLeft(i, j) {
     if ((i >= 0) && (j >= 0)) {
-        if (matrix[i][j].isOccuped()) {
+        if ((board.getCell(i,j).getToken() != null) && (board.getCell(i,j).getToken().getPlayerId() == playerTurn)) {
             return (checkTopLeft(i - 1, j - 1)) + 1;
         }
     }
@@ -68,7 +57,7 @@ function checkTopLeft(i, j) {
 
 function checkTopRight(i, j) {
     if ((i >= 0) && (j < 7)) {
-        if (matrix[i][j].isOccuped()) {
+        if ((board.getCell(i,j).getToken() != null) && (board.getCell(i,j).getToken().getPlayerId() == playerTurn)) {
             return (checkTopRight(i - 1, j + 1)) + 1;
         }
     }
@@ -77,7 +66,7 @@ function checkTopRight(i, j) {
 
 function checkLeft(i, j) {
     if ((j >= 0)) {
-        if (matrix[i][j].isOccuped()) {
+        if ((board.getCell(i,j).getToken() != null) && (board.getCell(i,j).getToken().getPlayerId() == playerTurn)) {
             return (checkLeft(i, j - 1)) + 1;
         }
     }
@@ -86,7 +75,7 @@ function checkLeft(i, j) {
 
 function checkRight(i, j) {
     if ((j < 7)) {
-        if (matrix[i][j].isOccuped()) {
+        if ((board.getCell(i,j).getToken() != null) && (board.getCell(i,j).getToken().getPlayerId() == playerTurn)) {
             return (checkRight(i, j + 1)) + 1;
         }
     }
@@ -95,7 +84,7 @@ function checkRight(i, j) {
 
 function checkBotLeft(i, j) {
     if ((i < 6) && (j >= 0)) {
-        if (matrix[i][j].isOccuped()) {
+        if ((board.getCell(i,j).getToken() != null) && (board.getCell(i,j).getToken().getPlayerId() == playerTurn)) {
             return (checkBotLeft(i + 1, j - 1)) + 1;
         }
     }
@@ -104,7 +93,7 @@ function checkBotLeft(i, j) {
 
 function checkBot(i, j) {
     if ((i < 6)) {
-        if (matrix[i][j].isOccuped()) {
+        if ((board.getCell(i,j).getToken() != null) && (board.getCell(i,j).getToken().getPlayerId() == playerTurn)) {
             return (checkBot(i + 1, j)) + 1;
         }
     }
@@ -113,29 +102,12 @@ function checkBot(i, j) {
 
 function checkBotRight(i, j) {
     if ((i < 6) && (j < 7)) {
-        if (matrix[i][j].isOccuped()) {
+        if ((board.getCell(i,j).getToken() != null) && (board.getCell(i,j).getToken().getPlayerId() == playerTurn)) {
             return (checkBotRight(i + 1, j + 1)) + 1;
         }
     }
     return 0;
 }
-
-// Eventos
-
-// Evento de prueba: al clickear una celda del arreglo de ranuras se dispara un evento que simula lo que pasaria si se insertara una ficha
-/* canvas.addEventListener("click", e => {
-    let x = e.offsetX;
-    let y = e.offsetY;
-    for (let i = 0; i < dropSlots.length; i++) {
-        if ((dropSlots[i].x1 <= x) && (x <= dropSlots[i].x2)) {
-            if ((dropSlots[i].y1 <= y) && (y <= dropSlots[i].y2)) {
-                let cellCordenates = dropToken(i);
-                checkFourInLine(cellCordenates);
-            }
-        }
-    }
-}); */
-
 
 const rowsQuantity = 6;
 const colunmsQuantity = 7;
@@ -210,8 +182,8 @@ function clearCanvas() {
 }
 
 function addToken() {
-    let token1 = new Token(playerOneX, playerOneY, 40, ctx, 1);
-    let token2 = new Token(playerTwoX, playerTwoY, 40, ctx, 2);
+    let token1 = new Token(playerOneX, playerOneY, 45, ctx, 1);
+    let token2 = new Token(playerTwoX, playerTwoY, 45, ctx, 2);
     playerOneTokens.push(token1);
     playerTwoTokens.push(token2);
     playerOneY += 5;
@@ -240,6 +212,9 @@ function findClickedFigure(x, y) {
     }
 }
 
+// Localiza donde fue soltada la ficha y si esta dentro del area permitida
+
+
 function onMouseDown(e) {
     isMouseDown = true;
     if (lastClickedToken != null) {
@@ -255,7 +230,25 @@ function onMouseDown(e) {
     drawFigure();
 }
 
-function onMouseUp(e) {
+function dropToken(j, token) {
+    for (let i = 0; i < board.getRows(); i++) {
+        if ((i + 1 >= board.getRows()) || (board.getCell(i + 1, j).isOccuped())) {
+            board.getCell(i,j).setOccuped();
+            board.getCell(i,j).setToken(token);
+            let x = (board.getCell(i,j).getX1() + board.getCell(i,j).getX2()) / 2;
+            let y = (board.getCell(i,j).getY1() + board.getCell(i,j).getY2()) / 2;
+            token.setPosition(x,y);
+            drawFigure();
+            return {
+                i: i,
+                j: j
+            };
+        }
+    }
+}
+
+function findDropArea(e) {
+    let token = lastClickedToken;
     isMouseDown = false;
     const minDx = boardX;
     const maxDx = board.getCols() * board.getCellSize() + boardX;
@@ -270,14 +263,21 @@ function onMouseUp(e) {
             const y = clickFig.getLastPosY();
             clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
             clickFig.setPosition(x, y);
+            for (let i = 0; i < dropSlots.length; i++) {
+                if ((dropSlots[i].x1 <= x) && (x <= dropSlots[i].x2)) {
+                    if ((dropSlots[i].y1 <= y) && (y <= dropSlots[i].y2)) {
+                        let cellCordenates = dropToken(i, token);
+                        checkFourInLine(cellCordenates);
+                        (playerTurn == 1)? playerTurn = 2: playerTurn = 1;
+                    }
+                }
+            }
         }
     }
-    drawFigure();
-    if (playerTurn == 1) {
-        playerTurn = 2;
-    } else {
-        playerTurn = 1;
-    }
+}
+
+function onMouseUp(e) {
+    isMouseDown = false;
 }
 
 function onMouseMove(e) {
@@ -289,5 +289,5 @@ function onMouseMove(e) {
 
 
 canvas.addEventListener('mousedown', onMouseDown, false);
-canvas.addEventListener('mouseup', onMouseUp, false);
+canvas.addEventListener('mouseup', (e) => { findDropArea(e) }, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
