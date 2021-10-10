@@ -142,7 +142,6 @@ const colunmsQuantity = 7;
 const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
 
 let lastClickedToken = null;
-let issMouseDown = false;
 let turn = 1;
 let playerOneX = 300;
 let playerOneY = 300;
@@ -169,7 +168,6 @@ let dX = boardX;
 let dy = boardY - 100;
 drawDropSlots();
 
-let lastClickedFigure = null;
 let isMouseDown = false;
 
 
@@ -244,14 +242,14 @@ function findClickedFigure(x, y) {
 
 function onMouseDown(e) {
     isMouseDown = true;
-    if (lastClickedFigure != null) {
-        lastClickedFigure.setResaltado(false);
-        lastClickedFigure = null;
+    if (lastClickedToken != null) {
+        lastClickedToken.setResaltado(false);
+        lastClickedToken = null;
     }
     let clickFig = findClickedFigure(e.offsetX, e.offsetY);
     if (clickFig != null) {
         clickFig.setResaltado(true);
-        lastClickedFigure = clickFig;
+        lastClickedToken = clickFig;
     }
     drawFigure();
 }
@@ -261,8 +259,8 @@ function onMouseUp(e) {
 }
 
 function onMouseMove(e) {
-    if (isMouseDown && (lastClickedFigure != null)) {
-        lastClickedFigure.setPosition(e.offsetX, e.offsetY);
+    if (isMouseDown && (lastClickedToken != null)) {
+        lastClickedToken.setPosition(e.offsetX, e.offsetY);
         drawFigure();
     }
 }
