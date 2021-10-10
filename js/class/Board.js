@@ -20,7 +20,7 @@ export default class Board {
                 cols.push(new Cell(cx, cy, this.cellSize, this.context));
                 cx += this.cellSize;
             }
-            cx = 0;
+            cx = this.posX;
             cy += this.cellSize;
             matrix.push(cols);
         }
@@ -72,12 +72,9 @@ export default class Board {
     drawBoard() {
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.cols; j++) {
-                this.context.beginPath();
                 this.board[i][j].drawCell();
-                this.context.closePath();
             }
         }
-    
     }
 
 }

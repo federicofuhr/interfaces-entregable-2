@@ -1,31 +1,50 @@
-export default class Token {
-    constructor(owner, imgSource, x1, y1, x2, y2) {
-        this.owner = owner;
-        this.source = imgSource;
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+import Drawable from "./Drawable.js";
+
+export default class Token extends Drawable {
+    constructor(posX, posY, radius, fill, context) {
+        super(posX, posY, fill, context);
+        this.radius = radius;
+        let img = new Image();
+        img.src = './images/fede.jpg';
+        this.img = img;
     }
-    getX1() {
-        return this.x1;
+    draw() {
+        super.draw();
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI, true);
+        if (this.resaltado) {
+            this.ctx.strokeStyle = this.resaltadoEstilo;
+            this.ctx.lineWidth = 5;
+            this.ctx.stroke();
+        }
+        this.ctx.closePath();
+        this.ctx.clip();
+
+        this.ctx.drawImage(this.img, this.posX - this.radius, this.posY - this.radius);
+
+        this.ctx.beginPath();
+        this.ctx.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI, true);
+        if (this.resaltado) {
+            this.ctx.strokeStyle = this.resaltadoEstilo;
+            this.ctx.lineWidth = 5;
+            this.ctx.stroke();
+        }
+        this.ctx.clip();
+        this.ctx.closePath();
+        this.ctx.restore();
     }
-    getY1() {
-        return this.y1;
+    getRadius() {
+        return this.radius;
     }
-    getX2() {
-        return this.x2;
+    isPointInside(x, y) {
+        const _x = this.posX - x;
+        const _y = this.posY - y;
+        return (Math.sqrt(_x * _x + _y * _x) < this.radius);
     }
-    getY2() {
-        return this.y2;
-    }
-    getOwner() {
-        return this.owner;
-    }
-    getSource() {
-        return this.source;
-    }
-    setSource(newSource) {
-        this.source = newSource;
+    setImage(path) {
+        let img = new Image();
+        img.src = path;
+        this.img = img;
     }
 }

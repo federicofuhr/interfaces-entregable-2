@@ -39,11 +39,8 @@ export default class Cell {
     }
 
     drawCell() {
-        this.context.fillStyle = "tomato";
-        this.context.beginPath();
-        this.context.arc(this.x1, this.x2, 10, 0, 2 * Math.PI, true);
-        
-        this.context.closePath();
-        //this.context.drawImage(this.img, this.x1, this.y1, this.width, this.height);
+        this.img.onload = () => {
+            this.context.drawImage(this.img, this.x1, this.y1, this.width, this.height);
+        };
     }
 }

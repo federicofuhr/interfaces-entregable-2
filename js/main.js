@@ -131,7 +131,7 @@ function checkBotRight(i,j) {
 // Eventos
 
 // Evento de prueba: al clickear una celda del arreglo de ranuras se dispara un evento que simula lo que pasaria si se insertara una ficha
-canvas.addEventListener("click", e => {
+/* canvas.addEventListener("click", e => {
     let x = e.offsetX;
     let y = e.offsetY;
     for (let i = 0; i < dropSlots.length; i++) {
@@ -142,7 +142,7 @@ canvas.addEventListener("click", e => {
             }
         }
     }
-});
+}); */
 
 // Invocaciones
 let board = new Board(500, 200, 6, 7, 100, ctx);

@@ -1,4 +1,4 @@
-import Circle from './class/Circle.js';
+import Token from './class/Token.js';
 import Rect from './class/Rect.js';
 
 document.addEventListener("DOMContentLoaded", init);
@@ -21,7 +21,7 @@ function init() {
     let posY = Math.round(Math.random() * canvasHeight);
 
     function addFigure() {
-        addCircle();
+        addToken();
         drawFigure();
     }
 
@@ -45,10 +45,10 @@ function init() {
         figures.push(rect);
     }
 
-    function addCircle() {
+    function addToken() {
         let color = randomRGBA();
-        let circle = new Circle(posX, posY, 40, color, ctx);
-        figures.push(circle);
+        let Token = new Token(posX, posY, 40, color, ctx);
+        figures.push(Token);
         posY += 5;
     }
 

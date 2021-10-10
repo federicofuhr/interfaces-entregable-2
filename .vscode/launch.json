@@ -9,7 +9,7 @@
             "request": "launch",
             "reAttach": true,
             "name": "Launch firefox",
-            "url": "http://localhost/matrixTest/index.html",
+            "url": "http://localhost/interfaces-entregable-2/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
