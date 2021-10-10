@@ -39,8 +39,6 @@ export default class Cell {
     }
 
     drawCell() {
-        this.img.onload = () => {
-            this.context.drawImage(this.img, this.x1, this.y1, this.width, this.height);
-        };
+        this.context.drawImage(this.img, this.x1, this.y1, this.width, this.height);
     }
 }

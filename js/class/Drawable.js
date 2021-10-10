@@ -1,4 +1,4 @@
-export default class Figure {
+export default class Drawable {
     constructor(posX, posY, fill, context) {
         this.posX = posX;
         this.posY = posY;
