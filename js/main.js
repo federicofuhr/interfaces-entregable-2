@@ -277,6 +277,10 @@ function gameStart() {
             timer.reset(1000);
             timeleft = 10;
             (playerTurn == 1) ? playerTurn = 2 : playerTurn = 1;
+            if ((lastClickedToken != null) && (!lastClickedToken.isLocked())) {
+                let data = lastClickedToken.getLastPosition();
+                lastClickedToken.setPosition(data.x, data.y);
+            }
             document.getElementById("timer").innerHTML = "TURNO FINALIZADO";
         } else {
             document.getElementById("timer").innerHTML = "JUGADOR " + playerTurn + " - " + timeleft + " SEGUNDOS RESTANTES";
