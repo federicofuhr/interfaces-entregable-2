@@ -50,9 +50,9 @@ export default class Token extends Drawable {
         const _y = this.posY - y;
         return (Math.sqrt(_x * _x + _y * _y) < this.radius);
     }
-    setImage(path) {
+    setImage(imgPath) {
         let img = new Image();
-        img.src = path;
+        img.src = './images/' + imgPath;
         this.img = img;
     }
 }
