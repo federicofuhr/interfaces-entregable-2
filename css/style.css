@@ -19,3 +19,15 @@
     display: flex;
     flex-direction: column;
 }
+
+#timer {
+    padding-left: 615px;
+}
+
+.text-personalize {
+    color: white;
+}
+
+.container-edit {
+    background-color: #282425;
+}

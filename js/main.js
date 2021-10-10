@@ -16,31 +16,38 @@ function checkFourInLine(cell) {
     let i = cell.i;
     let j = cell.j
     if (checkTopLeft(i, j) == 4) {
-        alert('GANASTE 1');
+        document.getElementById("timer").innerHTML = "";
+        timer.stop();
         return true;
     }
     if (checkTopRight(i, j) == 4) {
-        alert('GANASTE 3');
+        document.getElementById("timer").innerHTML = "";
+        timer.stop();
         return true;
     }
     if (checkLeft(i, j) == 4) {
-        alert('GANASTE 4');
+        document.getElementById("timer").innerHTML = "";
+        timer.stop();
         return true;
     }
     if (checkRight(i, j) == 4) {
-        alert('GANASTE 5');
+        document.getElementById("timer").innerHTML = "";
+        timer.stop();
         return true;
     }
     if (checkBotLeft(i, j) == 4) {
-        alert('GANASTE 6');
+        document.getElementById("timer").innerHTML = "";
+        timer.stop();
         return true;
     }
     if (checkBot(i, j) == 4) {
-        alert('GANASTE 7');
+        document.getElementById("timer").innerHTML = "";
+        timer.stop();
         return true;
     }
     if (checkBotRight(i, j) == 4) {
-        alert('GANASTE 8');
+        document.getElementById("timer").innerHTML = "";
+        timer.stop();
         return true;
     }
     return false;
@@ -116,9 +123,9 @@ const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
 let lastClickedToken = null;
 let playerTurn = 1;
 let finalizedGame = false;
-let playerOneX = 300;
+let playerOneX = 100;
 let playerOneY = 100;
-let playerTwoX = 1500;
+let playerTwoX = 1400;
 let playerTwoY = 100;
 
 let playerOneTokens = [];
@@ -127,7 +134,7 @@ let playerTwoTokens = [];
 let canvasWidth = canvas.width;
 let canvasHeight = canvas.height;
 
-let boardX = 500;
+let boardX = 390;
 let boardY = 200;
 let rows = 6;
 let cols = 7;
@@ -178,7 +185,7 @@ function drawFigure() {
 }
 
 function clearCanvas() {
-    ctx.fillStyle = '#F8F8FF';
+    ctx.fillStyle = '#282425';
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 }
 
