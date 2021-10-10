@@ -1,8 +1,8 @@
 import Drawable from "./Drawable.js";
 
 export default class Token extends Drawable {
-    constructor(posX, posY, radius, context, playerId, imgPath) {
-        super(posX, posY, context);
+    constructor(posX, posY, lastPosX, lastPosY, radius, context, playerId, imgPath) {
+        super(posX, posY, lastPosX, lastPosY, context);
         this.radius = radius;
         this.playerId = playerId;
         let img = new Image();

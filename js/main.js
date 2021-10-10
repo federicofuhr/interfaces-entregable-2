@@ -116,9 +116,9 @@ const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
 let lastClickedToken = null;
 let playerTurn = 1;
 let playerOneX = 300;
-let playerOneY = 300;
+let playerOneY = 100;
 let playerTwoX = 1500;
-let playerTwoY = 300;
+let playerTwoY = 100;
 
 let playerOneTokens = [];
 let playerTwoTokens = [];
@@ -182,12 +182,12 @@ function clearCanvas() {
 }
 
 function addToken() {
-    let token1 = new Token(playerOneX, playerOneY, 45, ctx, 1, "fede.jpg");
-    let token2 = new Token(playerTwoX, playerTwoY, 45, ctx, 2, "juan.jpg");
+    let token1 = new Token(playerOneX, playerOneY,playerOneX, playerOneY, 45, ctx, 1, "fede.jpg");
+    let token2 = new Token(playerTwoX, playerTwoY,playerTwoX, playerTwoY, 45, ctx, 2, "juan.jpg");
     playerOneTokens.push(token1);
     playerTwoTokens.push(token2);
-    playerOneY += 5;
-    playerTwoY += 5;
+    playerOneY += 40;
+    playerTwoY += 40;
 }
 
 function addFigures() {
@@ -224,7 +224,7 @@ function onMouseDown(e) {
     let clickFig = findClickedFigure(e.offsetX, e.offsetY);
     if ((clickFig != null) && (!clickFig.isLocked())) {
         clickFig.setResaltado(true);
-        clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
+        //clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
         lastClickedToken = clickFig;
     }
     drawFigure();
@@ -259,10 +259,10 @@ function findDropArea(e) {
     if (((x >= minDx) && (x <= maxDx) && (y >= minDy) && (y <= maxDy))) {
         let clickFig = findClickedFigure(e.offsetX, e.offsetY);
         if (clickFig != null) {
-            clickFig.setLocked(true);
             for (let i = 0; i < dropSlots.length; i++) {
                 if ((dropSlots[i].x1 <= x) && (x <= dropSlots[i].x2)) {
                     if ((dropSlots[i].y1 <= y) && (y <= dropSlots[i].y2)) {
+                        clickFig.setLocked(true);
                         let cellCordenates = dropToken(i, token);
                         checkFourInLine(cellCordenates);
                         (playerTurn == 1)? playerTurn = 2: playerTurn = 1;
@@ -275,9 +275,8 @@ function findDropArea(e) {
         if (clickFig != null) {
             const x = clickFig.getLastPosX();
             const y = clickFig.getLastPosY();
-            clickFig.setLastPosition(clickFig.getPosX(), clickFig.getPosY());
             clickFig.setPosition(x, y);
-            clickFig.setLocked(true);
+            drawFigure();
         }
     }
 }

@@ -1,12 +1,12 @@
 export default class Drawable {
-    constructor(posX, posY, context) {
+    constructor(posX, posY, lastPosX, lastPosY, context) {
         this.posX = posX;
         this.posY = posY;
         this.resaltado = false;
         this.resaltadoEstilo = "red";
         this.ctx = context;
-        this.lastPosX = null;
-        this.lastPosY = null;
+        this.lastPosX = lastPosX;
+        this.lastPosY = lastPosY;
     }
     setLastPosition(x, y) {
         this.lastPosX = x;
