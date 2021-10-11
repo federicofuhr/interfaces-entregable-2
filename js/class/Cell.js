@@ -44,6 +44,9 @@ export default class Cell {
     setToken(token) {
         this.token = token;
     }
+    setImage(src) {
+        this.img.src = src;
+    }
     // funcion para representar la celda en el canvas
     drawCell() {
         this.context.drawImage(this.img, this.x1, this.y1, this.width, this.height);

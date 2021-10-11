@@ -185,7 +185,10 @@ function gameStart() {
     let dropSlots = [];
     let dX = boardX;
     let dy = boardY - 100;
+    let dropSlotIndicator = new Image();
+    dropSlotIndicator.src = "./images/down-arrow.png";
     drawDropSlots();
+
 
     let isMouseDown = false;
 
@@ -194,16 +197,17 @@ function gameStart() {
 
     // Cargar dropSlots
     for (let i = 0; i < cols; i++) {
-        dropSlots.push(new Cell(dX, dy, board.getCellSize(), ctx));
+        let cell = new Cell(dX, dy, board.getCellSize(), ctx)
+        cell.setImage(dropSlotIndicator.src);
+        dropSlots.push(cell);
         dX += board.getCellSize();
     }
 
     //dibujar dropSlots
     function drawDropSlots() {
-        ctx.strokeStyle = "steelblue";
         for (let i = 0; i < dropSlots.length; i++) {
             ctx.beginPath();
-            ctx.strokeRect(dropSlots[i].x1, dropSlots[i].y1, board.getCellSize(), board.getCellSize());
+            dropSlots[i].drawCell();
             ctx.closePath();
         }
     }
@@ -276,7 +280,7 @@ function gameStart() {
         if (timeleft <= 0) {
             timer.reset(1000);
             timeleft = 10;
-            (playerTurn == 1) ? playerTurn = 2 : playerTurn = 1;
+            (playerTurn == 1) ? playerTurn = 2: playerTurn = 1;
             document.getElementById("timer").innerHTML = "TURNO FINALIZADO";
         } else {
             document.getElementById("timer").innerHTML = "JUGADOR " + playerTurn + " - " + timeleft + " SEGUNDOS RESTANTES";
@@ -291,7 +295,7 @@ function gameStart() {
 
     function findClickedFigure(x, y) {
         let array;
-        (playerTurn == 1) ? array = playerOneTokens : array = playerTwoTokens;
+        (playerTurn == 1) ? array = playerOneTokens: array = playerTwoTokens;
         for (let i = 0; i < array.length; i++) {
             const element = array[i];
             if (element.isPointInside(x, y) && (playerTurn == element.getPlayerId())) {
@@ -379,9 +383,8 @@ function gameStart() {
                             let cellCordenates = dropToken(i, token);
                             let win = checkFourInLine(cellCordenates);
                             if (!win) {
-                                (playerTurn == 1) ? playerTurn = 2 : playerTurn = 1;
-                            }
-                            else
+                                (playerTurn == 1) ? playerTurn = 2: playerTurn = 1;
+                            } else
                                 notifyWinner();
                         }
                     }
