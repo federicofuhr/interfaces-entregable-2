@@ -22,7 +22,6 @@ select1.addEventListener("change", () => {
     let value2 = select2.value;
     if (value1 != value2) {
         srcPlayerOne = options[value1];
-        console.log(srcPlayerOne);
     }
 });
 
@@ -31,10 +30,11 @@ select2.addEventListener("change", () => {
     let value2 = select2.value;
     if (value1 != value2) {
         srcPlayerTwo = options[value2];
-        console.log(srcPlayerTwo);
     }
 });
-
+/**
+ * FUNCION PARA COMENZAR EL JUEGO.
+ */
 function gameStart() {
 
     srcPlayerOne == "" ? srcPlayerOne = "ficha-amarilla.png" : srcPlayerOne;
@@ -46,11 +46,9 @@ function gameStart() {
     let canvas = document.querySelector("#myCanvas");
     let ctx = canvas.getContext("2d");
 
-    function fillCell(cell) {
-        ctx.fillStyle = "tomato";
-        ctx.fillRect(cell.x1, cell.y1, cell.width, cell.height);
-    }
-
+    /**
+     * ESTA FUNCION SE ENCARGA DE HACER TODAS LAS INVOCACIONES NECESARIAS PARA CHEQUEAR SI SE GENERO UNA COMBINACION DE FICHAS GANADORA 
+     */
     function checkFourInLine(cell) {
         let i = cell.i;
         let j = cell.j
@@ -91,7 +89,9 @@ function gameStart() {
         }
         return false;
     }
-
+    /**
+     * FUNCIONES PARA CHECKEAR SI SE PRODUCE EEL 4 EN LINEA
+     */
     function checkTopLeft(i, j) {
         if ((i >= 0) && (j >= 0)) {
             if ((board.getCell(i, j).getToken() != null) && (board.getCell(i, j).getToken().getPlayerId() == playerTurn)) {
@@ -155,13 +155,15 @@ function gameStart() {
         return 0;
     }
 
+    /**
+     * DECLARACION DE VARIABLES INICIALES
+     */
     const rowsQuantity = 6;
     const colunmsQuantity = 7;
     const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
 
     let lastClickedToken = null;
     let playerTurn = 1;
-    let finalizedGame = false;
     let playerOneX = 100;
     let playerOneY = 100;
     let playerTwoX = 1400;
@@ -203,7 +205,9 @@ function gameStart() {
         dX += board.getCellSize();
     }
 
-    //dibujar dropSlots
+    /**
+     * FUNCION PARA DIBUJAR LAS CELDAS DONDE SE SUELTAN LAS FICHAS
+     */
     function drawDropSlots() {
         for (let i = 0; i < dropSlots.length; i++) {
             ctx.beginPath();
@@ -212,11 +216,16 @@ function gameStart() {
         }
     }
 
+    /**
+     * 
+     */
     function addFigure() {
         addToken();
         drawFigure();
     }
-
+    /**
+     * DIBUJA TODAS LAS FICHAS DE AMBOS JUGADORES
+     */
     function drawFigure() {
         clearCanvas();
         for (let i = 0; i < playerOneTokens.length; i++) {
@@ -226,12 +235,17 @@ function gameStart() {
             drawDropSlots();
         }
     }
-
+    /**
+     * FUNCION PARA LIMPIAR EL CONTENIDO DEL CANVAS
+     */
     function clearCanvas() {
         ctx.fillStyle = '#282425';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
+    /**
+     * FUNCION PARA AGREGAR UNA FICHA A CADA JUGADOR
+     */
     function addToken() {
         let token1 = new Token(playerOneX, playerOneY, playerOneX, playerOneY, 45, ctx, 1, srcPlayerOne);
         let token2 = new Token(playerTwoX, playerTwoY, playerTwoX, playerTwoY, 45, ctx, 2, srcPlayerTwo);
@@ -247,7 +261,9 @@ function gameStart() {
             setTimeout(addFigures, 0);
         }
     }
-
+    /**
+     * CLASE PARA EL TEMPORIZADOR DE TURNOS 
+     */
     function Timer(fn, t) {
         var timerObj = setInterval(fn, t);
 
@@ -297,6 +313,9 @@ function gameStart() {
         addFigures();
     }, 333);
 
+    /**
+     * LOCALIZA LA ULTIMA FICHA EN SER CLICKEADA POR EL JUGADOR
+     */
     function findClickedFigure(x, y) {
         let array;
         (playerTurn == 1) ? array = playerOneTokens: array = playerTwoTokens;
@@ -309,9 +328,9 @@ function gameStart() {
         return null;
     }
 
-    // Localiza donde fue soltada la ficha y si esta dentro del area permitida
-
-
+    /**
+     * ACTUALIZA EL VALOR DE LA ULTIMA FICHA CLICKEADA POR EL JUGADOR Y LA RESALTA CUANDO EL CLICK ES PRESIONADO 
+     */
     function onMouseDown(e) {
         isMouseDown = true;
         if (lastClickedToken != null) {
@@ -326,8 +345,10 @@ function gameStart() {
         drawFigure();
     }
 
+    /**
+     * CREA E INYECTA EN EL HTML LOS ELEMENTOS NECESARIOS PARA NOTIFICAR EN PANTALLA AL JUGADOR GANADOR Y PERMITIRLE REINICIAR EL JUEGO
+     */
     function notifyWinner() {
-        console.log("gano el jugador: ", playerTurn);
         canvas.classList.toggle("collapse");
         let notify = document.createElement("div");
         notify.classList.add("winner-screen");
@@ -349,6 +370,9 @@ function gameStart() {
         body.insertBefore(notify, canvas);
     }
 
+    /**
+     * DETERMINA EN QUE CELDA DEL TABLERO TERMINARA LA FICHA SOLTADA POR EL JUGADOR Y LA DIBUJA DONDE CORRESPONDE 
+     */
     function dropToken(j, token) {
         for (let i = 0; i < board.getRows(); i++) {
             if ((i + 1 >= board.getRows()) || (board.getCell(i + 1, j).isOccuped())) {
@@ -366,6 +390,9 @@ function gameStart() {
         }
     }
 
+    /**
+     * DETERMINA EN QUE PARTE DEL AREA PERMITIDA FUE SOLTADA LA FICHA Y SI FUE SOLTADA CORRECTAMENTE HACE LOS LLAMADOS NECESARIOS PARA QUE CAIGA EN LA CELDA CORRECTA 
+     */
     function findDropArea(e) {
         let token = lastClickedToken;
         isMouseDown = false;
@@ -405,10 +432,9 @@ function gameStart() {
         }
     }
 
-    function onMouseUp(e) {
-        isMouseDown = false;
-    }
-
+    /**
+     * SE ENCARGA DE TRASLADAR LA FICHA A MEDIDA QUE EL JUGADOR LA ARRASTRA POR EL CANVAS 
+     */
     function onMouseMove(e) {
         if (isMouseDown && (lastClickedToken != null)) {
             lastClickedToken.setPosition(e.offsetX, e.offsetY);
@@ -423,13 +449,4 @@ function gameStart() {
         drawFigure();
     }, false);
     canvas.addEventListener('mousemove', onMouseMove, false);
-
-
-    function updateToken(token, src) {
-        setTimeout(() => {
-            token.setImage(src);
-            token.draw();
-        }, 0);
-
-    }
 }
