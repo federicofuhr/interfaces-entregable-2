@@ -442,7 +442,24 @@ function gameStart() {
      */
     function onMouseMove(e) {
         if (isMouseDown && (lastClickedToken != null)) {
-            lastClickedToken.setPosition(e.offsetX, e.offsetY);
+            const minX = boardX;
+            const maxX = board.getCols() * board.getCellSize() + boardX;
+            const minY = boardY;
+            const maxY = board.getRows() * board.getCellSize() + boardY;
+            const x = e.offsetX;
+            const y = e.offsetY;
+            console.log("INICIO TABLERO X: " + minX);
+            console.log("FIN TABLERO X: " + maxX);
+            console.log("INICIO TABLERO Y: " + minY);
+            console.log("FIN TABLERO Y: " + maxY);
+            console.log("X: " + x);
+            console.log("Y: " + y);
+            if ((((x + lastClickedToken.getRadius()) >= minX) && ((x - lastClickedToken.getRadius()) <= maxX) && ((y + lastClickedToken.getRadius()) >= minY) && ((y - lastClickedToken.getRadius()) <= maxY))) {
+                let a = 1;
+                console.log("entro aca");
+            } else {
+                lastClickedToken.setPosition(e.offsetX, e.offsetY);
+            }
             drawFigure();
         }
     }
