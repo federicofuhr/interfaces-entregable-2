@@ -40,7 +40,7 @@ export default class Token extends Drawable {
         }
         this.ctx.closePath();
         this.ctx.clip();
-        this.ctx.drawImage(this.img, this.posX - this.radius, this.posY - this.radius, 100, 100);
+        this.ctx.drawImage(this.img, this.posX - this.radius, this.posY - this.radius, this.radius * 2, this.radius * 2);
         this.ctx.beginPath();
         this.ctx.arc(this.posX, this.posY, this.radius, 0, 2 * Math.PI, true);
         if (this.resaltado) {

@@ -162,40 +162,45 @@ function gameStart() {
     const colunmsQuantity = 7;
     const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
 
+    let canvasWidth = window.innerWidth;
+    let canvasHeight = window.innerHeight;
+
+    console.log(canvasWidth);
+    console.log(canvasHeight);
+
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
     let lastClickedToken = null;
     let playerTurn = 1;
-    let playerOneX = 100;
-    let playerOneY = 100;
-    let playerTwoX = 1400;
-    let playerTwoY = 100;
+    let playerOneX =  canvasWidth * 0.06666666666666666666666666666667;
+    let playerOneY = canvasHeight * 0.111111111111111111111111111111111;
+    let playerTwoX = canvasWidth * 0.93333333333333333333333333333333;
+    let playerTwoY = canvasHeight * 0.111111111111111111111111111111111;
 
     let playerOneTokens = [];
     let playerTwoTokens = [];
 
-    let canvasWidth = canvas.width;
-    let canvasHeight = canvas.height;
-
-    let boardX = 390;
-    let boardY = 200;
+    let boardX = canvasWidth * 0.27;
+    let boardY = canvasHeight * 0.222;
     let rows = 6;
     let cols = 7;
+    let cellSize = (Math.sqrt(canvasWidth * canvasWidth + canvasHeight * canvasHeight)) * 0.054;
+    let tokenRadius = cellSize * 0.45;
 
-    let board = new Board(boardX, boardY, rows, cols, 100, ctx);
+    let board = new Board(boardX, boardY, rows, cols, cellSize, ctx);
     board.drawBoard();
 
     // dropSlots es un arreglo de objetos Cell que sirve para representar las ranuras donde se insertan las fichas
     let dropSlots = [];
     let dX = boardX;
-    let dy = boardY - 100;
+    let dy = boardY - (canvasHeight * 0.125);
     let dropSlotIndicator = new Image();
     dropSlotIndicator.src = "./images/down-arrow.png";
     drawDropSlots();
 
 
     let isMouseDown = false;
-
-
-
 
     // Cargar dropSlots
     for (let i = 0; i < cols; i++) {
@@ -231,9 +236,9 @@ function gameStart() {
         for (let i = 0; i < playerOneTokens.length; i++) {
             playerOneTokens[i].draw();
             playerTwoTokens[i].draw();
-            board.drawBoard();
-            drawDropSlots();
         }
+        board.drawBoard();
+        drawDropSlots();
     }
     /**
      * FUNCION PARA LIMPIAR EL CONTENIDO DEL CANVAS
@@ -247,12 +252,12 @@ function gameStart() {
      * FUNCION PARA AGREGAR UNA FICHA A CADA JUGADOR
      */
     function addToken() {
-        let token1 = new Token(playerOneX, playerOneY, playerOneX, playerOneY, 45, ctx, 1, srcPlayerOne);
-        let token2 = new Token(playerTwoX, playerTwoY, playerTwoX, playerTwoY, 45, ctx, 2, srcPlayerTwo);
+        let token1 = new Token(playerOneX, playerOneY, playerOneX, playerOneY, tokenRadius, ctx, 1, srcPlayerOne);
+        let token2 = new Token(playerTwoX, playerTwoY, playerTwoX, playerTwoY, tokenRadius, ctx, 2, srcPlayerTwo);
         playerOneTokens.push(token1);
         playerTwoTokens.push(token2);
-        playerOneY += 30;
-        playerTwoY += 30;
+        playerOneY += canvasHeight * 0.0333333333;
+        playerTwoY += canvasHeight * 0.0333333333;
     }
 
     function addFigures() {
@@ -423,7 +428,7 @@ function gameStart() {
             }
         } else {
             let clickFig = findClickedFigure(e.offsetX, e.offsetY);
-            if (clickFig != null) {
+            if ((clickFig != null) && (!clickFig.isLocked())) {
                 const x = clickFig.getLastPosX();
                 const y = clickFig.getLastPosY();
                 clickFig.setPosition(x, y);
