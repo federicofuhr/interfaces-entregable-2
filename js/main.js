@@ -49,40 +49,40 @@ function gameStart() {
     /**
      * ESTA FUNCION SE ENCARGA DE HACER TODAS LAS INVOCACIONES NECESARIAS PARA CHEQUEAR SI SE GENERO UNA COMBINACION DE FICHAS GANADORA 
      */
-    function checkFourInLine(cell) {
+    function checkLine(cell, quantity) {
         let i = cell.i;
         let j = cell.j
-        if (checkTopLeft(i, j) == 4) {
+        if (checkTopLeft(i, j) == quantity) {
             document.getElementById("timer").innerHTML = "";
             timer.stop();
             return true;
         }
-        if (checkTopRight(i, j) == 4) {
+        if (checkTopRight(i, j) == quantity) {
             document.getElementById("timer").innerHTML = "";
             timer.stop();
             return true;
         }
-        if (checkLeft(i, j) == 4) {
+        if (checkLeft(i, j) == quantity) {
             document.getElementById("timer").innerHTML = "";
             timer.stop();
             return true;
         }
-        if (checkRight(i, j) == 4) {
+        if (checkRight(i, j) == quantity) {
             document.getElementById("timer").innerHTML = "";
             timer.stop();
             return true;
         }
-        if (checkBotLeft(i, j) == 4) {
+        if (checkBotLeft(i, j) == quantity) {
             document.getElementById("timer").innerHTML = "";
             timer.stop();
             return true;
         }
-        if (checkBot(i, j) == 4) {
+        if (checkBot(i, j) == quantity) {
             document.getElementById("timer").innerHTML = "";
             timer.stop();
             return true;
         }
-        if (checkBotRight(i, j) == 4) {
+        if (checkBotRight(i, j) == quantity) {
             document.getElementById("timer").innerHTML = "";
             timer.stop();
             return true;
@@ -165,9 +165,6 @@ function gameStart() {
     let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
 
-    console.log(canvasWidth);
-    console.log(canvasHeight);
-
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
@@ -177,12 +174,13 @@ function gameStart() {
     let playerOneY = canvasHeight * 0.111111111111111111111111111111111;
     let playerTwoX = canvasWidth * 0.93333333333333333333333333333333;
     let playerTwoY = canvasHeight * 0.111111111111111111111111111111111;
+    let inLineQuantity = 6;
 
     let playerOneTokens = [];
     let playerTwoTokens = [];
 
     let boardX = canvasWidth * 0.27;
-    let boardY = canvasHeight * 0.222;
+    let boardY = canvasHeight * 0.1222;
     let rows = 6;
     let cols = 7;
     let cellSize = (Math.sqrt(canvasWidth * canvasWidth + canvasHeight * canvasHeight)) * 0.054;
@@ -417,7 +415,7 @@ function gameStart() {
                             timeleft = 10;
                             clickFig.setLocked(true);
                             let cellCordenates = dropToken(i, token);
-                            let win = checkFourInLine(cellCordenates);
+                            let win = checkLine(cellCordenates, inLineQuantity);
                             if (!win) {
                                 (playerTurn == 1) ? playerTurn = 2: playerTurn = 1;
                             } else
@@ -448,12 +446,6 @@ function gameStart() {
             const maxY = board.getRows() * board.getCellSize() + boardY;
             const x = e.offsetX;
             const y = e.offsetY;
-            console.log("INICIO TABLERO X: " + minX);
-            console.log("FIN TABLERO X: " + maxX);
-            console.log("INICIO TABLERO Y: " + minY);
-            console.log("FIN TABLERO Y: " + maxY);
-            console.log("X: " + x);
-            console.log("Y: " + y);
             if ((((x + lastClickedToken.getRadius()) >= minX) && ((x - lastClickedToken.getRadius()) <= maxX) && ((y + lastClickedToken.getRadius()) >= minY) && ((y - lastClickedToken.getRadius()) <= maxY))) {
                 let a = 1;
                 console.log("entro aca");
