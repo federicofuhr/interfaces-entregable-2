@@ -34,7 +34,18 @@
                 </div>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <label class="input-group-text" for="token-2">Estilo de ficha Jugador 1 </label>
+                        <label class="input-group-text" for="game-mode">Modo</label>
+                    </div>
+                    <select class="custom-select" name="game-mode" id="game-mode">
+                        <option value="4" selected>4 en linea</option>
+                        <option value="5">5 en linea</option>
+                        <option value="6">6 en linea</option>
+                        <option value="7">7 en linea</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="token-2">Estilo de ficha Jugador 2 </label>
                     </div>
                     <select class="custom-select" name="style-2" id="token-2">
                         <option value="1">Ficha Amarilla</option>
@@ -48,14 +59,14 @@
         <div>
             <p id="timer" class="fw-bold fs-4 text-personalize"></p>
         </div>
-        
+
         <canvas id="myCanvas"></canvas>
     </div>
     <script type="module" src="js/main.js?v=16102021"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

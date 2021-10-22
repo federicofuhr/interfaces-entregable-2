@@ -2,6 +2,7 @@ import Board from "./class/Board.js";
 import Token from "./class/Token.js";
 import Cell from "./class/Cell.js";
 
+let selectGameMode = document.querySelector("#game-mode");
 let btnStart = document.querySelector("#new-game");
 btnStart.addEventListener("click", gameStart);
 
@@ -39,6 +40,8 @@ function gameStart() {
 
     srcPlayerOne == "" ? srcPlayerOne = "ficha-amarilla.png" : srcPlayerOne;
     srcPlayerTwo == "" ? srcPlayerTwo = "ficha-corazon.png" : srcPlayerTwo;
+    let gameMode = parseInt(selectGameMode.value, 10);
+    console.log(gameMode);
 
     let gameOptions = document.querySelector("#game-options");
     gameOptions.classList.add("collapse");
@@ -102,7 +105,7 @@ function gameStart() {
     }
 
     function checkTopRight(i, j) {
-        if ((i >= 0) && (j < 7)) {
+        if ((i >= 0) && (j < columnsQuantity)) {
             if ((board.getCell(i, j).getToken() != null) && (board.getCell(i, j).getToken().getPlayerId() == playerTurn)) {
                 return (checkTopRight(i - 1, j + 1)) + 1;
             }
@@ -120,7 +123,7 @@ function gameStart() {
     }
 
     function checkRight(i, j) {
-        if ((j < 7)) {
+        if ((j < columnsQuantity)) {
             if ((board.getCell(i, j).getToken() != null) && (board.getCell(i, j).getToken().getPlayerId() == playerTurn)) {
                 return (checkRight(i, j + 1)) + 1;
             }
@@ -129,7 +132,7 @@ function gameStart() {
     }
 
     function checkBotLeft(i, j) {
-        if ((i < 6) && (j >= 0)) {
+        if ((i < rowsQuantity) && (j >= 0)) {
             if ((board.getCell(i, j).getToken() != null) && (board.getCell(i, j).getToken().getPlayerId() == playerTurn)) {
                 return (checkBotLeft(i + 1, j - 1)) + 1;
             }
@@ -138,7 +141,7 @@ function gameStart() {
     }
 
     function checkBot(i, j) {
-        if ((i < 6)) {
+        if ((i < rowsQuantity)) {
             if ((board.getCell(i, j).getToken() != null) && (board.getCell(i, j).getToken().getPlayerId() == playerTurn)) {
                 return (checkBot(i + 1, j)) + 1;
             }
@@ -147,7 +150,7 @@ function gameStart() {
     }
 
     function checkBotRight(i, j) {
-        if ((i < 6) && (j < 7)) {
+        if ((i < rowsQuantity) && (j < columnsQuantity)) {
             if ((board.getCell(i, j).getToken() != null) && (board.getCell(i, j).getToken().getPlayerId() == playerTurn)) {
                 return (checkBotRight(i + 1, j + 1)) + 1;
             }
@@ -158,9 +161,38 @@ function gameStart() {
     /**
      * DECLARACION DE VARIABLES INICIALES
      */
-    const rowsQuantity = 6;
-    const colunmsQuantity = 7;
-    const CANT_FIG = (rowsQuantity * colunmsQuantity) / 2;
+
+    function setGameParams() {
+        switch (gameMode) {
+            case 4:
+                rowsQuantity = 6;
+                columnsQuantity = 7;
+                inLineQuantity = 4;
+                break;
+            case 5:
+                rowsQuantity = 7;
+                columnsQuantity = 8;
+                inLineQuantity = 5;
+                break;
+            case 6:
+                rowsQuantity = 8;
+                columnsQuantity = 9;
+                inLineQuantity = 6;
+                break;
+            case 7:
+                rowsQuantity = 9;
+                columnsQuantity = 10;
+                inLineQuantity = 7;
+                break;
+            default:
+                break;
+        }
+    }
+    let rowsQuantity = 0;
+    let columnsQuantity = 0;
+    let inLineQuantity = 0;
+    setGameParams();
+    let CANT_FIG = (rowsQuantity * columnsQuantity) / 2;
 
     let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
@@ -170,23 +202,20 @@ function gameStart() {
 
     let lastClickedToken = null;
     let playerTurn = 1;
-    let playerOneX =  canvasWidth * 0.06666666666666666666666666666667;
+    let playerOneX = canvasWidth * 0.06666666666666666666666666666667;
     let playerOneY = canvasHeight * 0.111111111111111111111111111111111;
     let playerTwoX = canvasWidth * 0.93333333333333333333333333333333;
     let playerTwoY = canvasHeight * 0.111111111111111111111111111111111;
-    let inLineQuantity = 6;
 
     let playerOneTokens = [];
     let playerTwoTokens = [];
 
     let boardX = canvasWidth * 0.27;
     let boardY = canvasHeight * 0.1222;
-    let rows = 6;
-    let cols = 7;
     let cellSize = (Math.sqrt(canvasWidth * canvasWidth + canvasHeight * canvasHeight)) * 0.054;
     let tokenRadius = cellSize * 0.45;
 
-    let board = new Board(boardX, boardY, rows, cols, cellSize, ctx);
+    let board = new Board(boardX, boardY, rowsQuantity, columnsQuantity, cellSize, ctx);
     board.drawBoard();
 
     // dropSlots es un arreglo de objetos Cell que sirve para representar las ranuras donde se insertan las fichas
@@ -201,7 +230,7 @@ function gameStart() {
     let isMouseDown = false;
 
     // Cargar dropSlots
-    for (let i = 0; i < cols; i++) {
+    for (let i = 0; i < columnsQuantity; i++) {
         let cell = new Cell(dX, dy, board.getCellSize(), ctx)
         cell.setImage(dropSlotIndicator.src);
         dropSlots.push(cell);
@@ -299,7 +328,7 @@ function gameStart() {
         if (timeleft <= 0) {
             timer.reset(1000);
             timeleft = 10;
-            (playerTurn == 1) ? playerTurn = 2 : playerTurn = 1;
+            (playerTurn == 1) ? playerTurn = 2: playerTurn = 1;
             if ((lastClickedToken != null) && (!lastClickedToken.isLocked())) {
                 let data = lastClickedToken.getLastPosition();
                 lastClickedToken.setPosition(data.x, data.y);
