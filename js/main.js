@@ -168,21 +168,25 @@ function gameStart() {
                 rowsQuantity = 6;
                 columnsQuantity = 7;
                 inLineQuantity = 4;
+                proportion = 1;
                 break;
             case 5:
                 rowsQuantity = 7;
                 columnsQuantity = 8;
                 inLineQuantity = 5;
+                proportion = 0.75;
                 break;
             case 6:
                 rowsQuantity = 8;
                 columnsQuantity = 9;
                 inLineQuantity = 6;
+                proportion = 0.70;
                 break;
             case 7:
                 rowsQuantity = 9;
                 columnsQuantity = 10;
                 inLineQuantity = 7;
+                proportion = 0.65;
                 break;
             default:
                 break;
@@ -191,6 +195,7 @@ function gameStart() {
     let rowsQuantity = 0;
     let columnsQuantity = 0;
     let inLineQuantity = 0;
+    let proportion = 0;
     setGameParams();
     let CANT_FIG = (rowsQuantity * columnsQuantity) / 2;
 
@@ -201,19 +206,22 @@ function gameStart() {
     canvas.height = canvasHeight;
 
     let lastClickedToken = null;
+    let boardX = (canvasWidth * 0.27) * proportion;
+    let boardY = (canvasHeight * 0.1222) * proportion;
+    let cellSize = ((Math.sqrt(canvasWidth * canvasWidth + canvasHeight * canvasHeight)) * 0.054) * proportion;
+    let tokenRadius = cellSize * 0.45;
     let playerTurn = 1;
-    let playerOneX = canvasWidth * 0.06666666666666666666666666666667;
-    let playerOneY = canvasHeight * 0.111111111111111111111111111111111;
-    let playerTwoX = canvasWidth * 0.93333333333333333333333333333333;
-    let playerTwoY = canvasHeight * 0.111111111111111111111111111111111;
-
+    let playerOneX = (canvasWidth * 0.06666666666666666666666666666667) * proportion;
+    let playerOneY = (canvasHeight * 0.111111111111111111111111111111111) * proportion;
+    let playerOneYReset = playerOneY;
+    let playerTwoX = ((boardX + (columnsQuantity * cellSize)) + 200);
+    //let playerTwoX = (canvasWidth * 0.83333333333333333333333333333333) * proportion;
+    let playerTwoY = (canvasHeight * 0.111111111111111111111111111111111) * proportion;
+    let playerTwoYReset = playerTwoY;
     let playerOneTokens = [];
     let playerTwoTokens = [];
 
-    let boardX = canvasWidth * 0.27;
-    let boardY = canvasHeight * 0.1222;
-    let cellSize = (Math.sqrt(canvasWidth * canvasWidth + canvasHeight * canvasHeight)) * 0.054;
-    let tokenRadius = cellSize * 0.45;
+   
 
     let board = new Board(boardX, boardY, rowsQuantity, columnsQuantity, cellSize, ctx);
     board.drawBoard();
@@ -221,7 +229,7 @@ function gameStart() {
     // dropSlots es un arreglo de objetos Cell que sirve para representar las ranuras donde se insertan las fichas
     let dropSlots = [];
     let dX = boardX;
-    let dy = boardY - (canvasHeight * 0.125);
+    let dy = boardY - ((canvasHeight * 0.125)) * proportion;
     let dropSlotIndicator = new Image();
     dropSlotIndicator.src = "./images/down-arrow.png";
     drawDropSlots();
@@ -283,8 +291,16 @@ function gameStart() {
         let token2 = new Token(playerTwoX, playerTwoY, playerTwoX, playerTwoY, tokenRadius, ctx, 2, srcPlayerTwo);
         playerOneTokens.push(token1);
         playerTwoTokens.push(token2);
-        playerOneY += canvasHeight * 0.0333333333;
-        playerTwoY += canvasHeight * 0.0333333333;
+        if (playerOneTokens.length == Math.floor(CANT_FIG / 2)) {
+            playerOneY = playerOneYReset;
+            playerTwoY = playerTwoYReset;
+            playerOneX += (canvasWidth * 0.05) * proportion;
+            playerTwoX += (canvasWidth * 0.05) * proportion;
+        }
+        else {
+            playerOneY += (canvasHeight * 0.0333333333) * proportion;
+            playerTwoY += (canvasHeight * 0.0333333333) * proportion;
+        }
     }
 
     function addFigures() {
